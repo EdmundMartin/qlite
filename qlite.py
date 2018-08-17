@@ -15,6 +15,7 @@ class Database:
         self.loop = loop if loop else asyncio.get_event_loop()
         self.connection_semaphore = Queue(maxsize=1)
         self.connection_semaphore.put_nowait({})
+        self.__connect_ref = None
 
     async def __acquire_connection(self):
         await self.connection_semaphore.get()
@@ -23,6 +24,16 @@ class Database:
     async def __call__(self, *args, **kwargs):
         db = await self.__acquire_connection()
         return Connection(db, self)
+
+    async def __aenter__(self):
+        db = await self.__acquire_connection()
+        conn = Connection(db, self)
+        self.__connect_ref = conn
+        return conn
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        if self.__connect_ref:
+            await self.__connect_ref.close()
 
 
 class Connection:
