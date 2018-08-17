@@ -120,7 +120,7 @@ class Connection:
     def _commit(self):
         try:
             self._cursor.commit()
-            return 'Commit'
+            return None
         except Exception as e:
             return e
 
