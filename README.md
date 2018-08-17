@@ -2,7 +2,7 @@
 SQLite3 wrapper which makes SQLite3 asynchronous in the sense that it can be used in async await code.
 
 # How Does qlite achieve this?
-qlite does all sorts of horrible things with threads and callbacks to achieve what look async interaction with SQLite3. When run in async program all other async code will be able to continue while you await on your SQLite3 interactions.
+qlite does all sorts of horrible things with threads and callbacks to achieve what looks like async interaction with SQLite3. When run in async program all other async code will be able to continue while you await on your SQLite3 interactions.
 
 # Example Useage
 ```python3
